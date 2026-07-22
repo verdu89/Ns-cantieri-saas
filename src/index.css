@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+/* Token brand = Ns-cantieri (arancio logo); neutri allineati a slate */
+@theme {
+  --color-brand: #ea580c;
+  --color-brand-light: #fb923c;
+  --color-brand-dark: #c2410c;
+  --color-graybg: #f8fafc;
+}
+
+/* Global base */
+html,
+body {
+  @apply bg-graybg text-slate-800 antialiased;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* App Capacitor: viewport pieno, scroll solo nel <main> del layout */
+html.capacitor-native {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body.capacitor-native {
+  box-sizing: border-box;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Cap 8 SystemBars: inset su topbar/layout, non sul body (evita fascia vuota sopra la nav) */
+}
+
+body.capacitor-native #root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Login: non usare 100dvh (ignora gli inset nativi della WebView) */
+html.capacitor-native .cap-auth-shell {
+  min-height: 100% !important;
+  height: 100%;
+}
+
+/* Container responsivo per tutte le pagine */
+.page {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(12px, 4vw, 48px);
+  padding-right: clamp(12px, 4vw, 48px);
+  max-width: clamp(900px, 95vw, 1400px);
+}
+
+/* Tipografia un filo più fluida (opzionale ma consigliato) */
+html {
+  font-size: clamp(15px, 1.6vw, 17px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* Contenuto pagina: evita overflow da flex/grid figli */
+.page-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Spazio sotto l'ultimo blocco nelle pagine lunghe (Agenda, liste) */
+body.capacitor-native main .page-content > *:last-child {
+  padding-bottom: 0.25rem;
+}
+
+/* Griglia KPI / tile: scroll orizzontale su mobile stretto */
+.kpi-scroll {
+  display: flex;
+  gap: 0.625rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.kpi-scroll > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+.kpi-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .kpi-scroll {
+    display: contents;
+    overflow: visible;
+    padding-bottom: 0;
+    scroll-snap-type: none;
+  }
+  .kpi-scroll > * {
+    flex-shrink: 1;
+  }
+}
